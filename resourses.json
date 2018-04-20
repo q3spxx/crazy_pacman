@@ -1,0 +1,7 @@
+{
+  "images": [{
+      "name": "pacman.png",
+      "rowSize": 32,
+      "id": 0
+    }]
+}

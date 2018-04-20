@@ -13,8 +13,10 @@ const server = http.createServer((request, response) => {
       response.setHeader('Content-type', 'text/css');
     } else if (fileName.search(/.js/i) != -1) {
       response.setHeader('Content-type', 'text/javascript');
+    } else if (fileName.search(/.png/i) != -1) {
+      response.setHeader('Content-type', 'image/png');
     } else {
-      throw new Error("File" + fileName + "is not accessible!");
+      throw new Error("File" + fileName + " is not accessible!");
     };
     response.end(file);
   } catch (e) {

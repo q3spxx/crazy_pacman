@@ -1,4 +1,4 @@
-import Game from './modules/game.js';
+import game from './modules/game.js';
 
-const game = new Game();
-game.start();
+game.init();
+// game.start();
