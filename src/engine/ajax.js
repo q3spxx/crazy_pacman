@@ -1,4 +1,4 @@
-export default class Ajax {
+class Ajax {
   constructor () {
     this.xhr = new XMLHttpRequest();
   }
@@ -19,3 +19,4 @@ export default class Ajax {
     });
   }
 }
+export default new Ajax();

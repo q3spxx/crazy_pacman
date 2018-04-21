@@ -1,17 +1,18 @@
 import data from './data.js';
-import Ajax from './ajax.js';
-import View from './view.js';
+import view from './view.js';
 import Scenes from './scenes.js';
+import Systems from './systems.js';
 
 class Game {
   constructor () {
     this.element = document.getElementById("canvas");
     this.isWorking = false;
-    this.fps = 1;
+    this.fpsCounter = 0;
+    this.lastFpsCounterUpdate = new Date().getTime();
+    this.fps = 30;
     this.lastFrame = new Date().getTime();
-    this.ajax = new Ajax();
-    this.view = new View(this.element.getContext('2d'));
     this.scenes = new Scenes();
+    this.systems = new Systems();
     this.mobile = false;
     this.size = {
       width: 672,
@@ -19,6 +20,7 @@ class Game {
     }
   }
   init () {
+    view.setElem(this.element.getContext('2d'));
     this.resize();
     window.addEventListener("resize", () => {this.resize()});
     data.init();
@@ -32,15 +34,33 @@ class Game {
     this.isWorking = false;
   }
   gameloop () {
+    //toogle
     if (!this.isWorking) return;
+    //fps limiter
     let time = new Date().getTime();
     if (time - this.lastFrame < 1000 / this.fps) {
       setTimeout(function () {
           window.requestAnimationFrame(this.gameloop.bind(this));
-      }.bind(this), 5);
+      }.bind(this), 0);
       return;
     };
-    console.log(222);
+    //loading
+    if (!data.resourses.loaded) {
+      window.requestAnimationFrame(this.gameloop.bind(this));
+      return;
+    }
+    //gameloop body
+    this.systems.handleStack();
+    view.render();
+
+    //fps counter
+    this.fpsCounter++;
+    if (time - this.lastFpsCounterUpdate > 1000) {
+      document.getElementById("fps").innerText = "Fps: " + this.fpsCounter;
+      this.fpsCounter = 0;
+      this.lastFpsCounterUpdate = time;
+    };
+    //next frame
     this.lastFrame = time;
     window.requestAnimationFrame(this.gameloop.bind(this));
   }
@@ -54,7 +74,7 @@ class Game {
       this.size.height = 672;
       this.mobile = false;
     };
-    this.view.setViewport(this.size);
+    view.setViewport(this.size);
     this.canvasResize();
   }
   canvasResize () {

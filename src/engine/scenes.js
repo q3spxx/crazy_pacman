@@ -9,7 +9,7 @@ export default class Scenes {
       case 'gameplay':
         this.scene = new Gameplay();
       break;
-      default:
-    }
+    };
+    this.scene.init();
   }
 }

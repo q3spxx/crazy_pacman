@@ -11,4 +11,12 @@ export default class Entities extends Manager {
     this.entities.push(entity);
     return entity;
   }
+  find (requirements) {
+    return this.entities.filter((entity) => {
+      for (let requirement of requirements) {
+        if (!entity.checkComponent(requirement)) return false;
+      };
+      return true;
+    });
+  }
 }
