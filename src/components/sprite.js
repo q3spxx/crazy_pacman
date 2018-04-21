@@ -1,7 +1,8 @@
 import Component from './component.js';
 
-export default class Renderer extends Component {
-  counstructor (size, scale, imageId, spriteId) {
+export default class Sprite extends Component {
+  constructor (size, scale, imageId, spriteId) {
+    super();
     this.width = size.width;
     this.height = size.height;
     this.scale = scale;
