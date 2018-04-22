@@ -30,14 +30,14 @@ function View () {
   var _drawImage = (task) => {
     _ctx.drawImage(
       _images[task.imageId].image,
-      task.loc.x,
-      task.loc.y,
-      task.loc.width,
-      task.loc.height,
       task.src.x,
       task.src.y,
-      task.src.width * _scale,
-      task.src.height * _scale
+      task.src.width,
+      task.src.height,
+      task.loc.x,
+      task.loc.y,
+      task.loc.width * _scale,
+      task.loc.height * _scale,
     );
   };
 
