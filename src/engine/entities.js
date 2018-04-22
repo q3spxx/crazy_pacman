@@ -1,22 +1,22 @@
 import Entity from './entity.js';
-import Manager from './manager.js';
 
-export default class Entities extends Manager {
-  constructor () {
-    super();
-    this.entities = [];
-  }
-  createEntity () {
+function Entities () {
+  var _entities = [];
+
+  this.createEntity = () => {
     let entity = new Entity();
-    this.entities.push(entity);
+    _entities.push(entity);
     return entity;
-  }
-  find (requirements) {
-    return this.entities.filter((entity) => {
+  };
+
+  this.find = (requirements) => {
+    return _entities.filter((entity) => {
       for (let requirement of requirements) {
         if (!entity.checkComponent(requirement)) return false;
       };
       return true;
     });
-  }
-}
+  };
+};
+
+export default Entities;
