@@ -1,5 +1,6 @@
 import data from './data.js';
 import view from './view.js';
+console.log(view);
 import Scenes from './scenes.js';
 import Systems from './systems.js';
 

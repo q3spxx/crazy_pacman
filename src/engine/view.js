@@ -1,40 +1,26 @@
-class View {
-  constructor () {
-    this.images = [];
-    this.tasks = []
-    this.elem = null;
-    this.viewport = {
-      width: 0,
-      height: 0
-    }
-  }
-  setImages (images) {
-    this.images = images;
-  }
-  setViewport (size) {
-    this.viewport = {
-      width: size.width,
-      height: size.height
-    }
-  }
-  setElem (elem) {
-    this.elem = elem;
-  }
-  addTask (task) {
-    this.tasks.push(task);
-  }
-  clear () {
-    this.elem.fillStyle = "black";
-    this.elem.fillRect(0, 0, this.viewport.width, this.viewport.height);
-  }
-  render () {
-    this.clear();
-    let forRender = this.tasks.sort((a, b) => {
+function View () {
+  var _images = [];
+  var _tasks = []
+  var _elem = null;
+  var _viewport = {
+    width: 0,
+    height: 0
+  };
+  var _clear = () => {
+    _elem.fillStyle = "black";
+    _elem.fillRect(0, 0, _viewport.width, _viewport.height);
+  };
+  this.setElem = (elem) => {
+    _elem = elem;
+  };
+  this.render = () => {
+    _clear();
+    let forRender = _tasks.sort((a, b) => {
       return a.layer > b.layer ? -1 : 1;
     });
     forRender.forEach((task) => {
-      this.elem.drawImage(
-        this.images[task.imageId].image,
+      _elem.drawImage(
+        _images[task.imageId].image,
         task.loc.x,
         task.loc.y,
         task.loc.width,
@@ -45,8 +31,20 @@ class View {
         task.src.height
       );
     });
-    this.tasks = [];
-  }
-};
+    _tasks = [];
+  };
+  this.addTask = (task) => {
+    _tasks.push(task);
+  };
+  this.setViewport = (size) => {
+    _viewport = {
+      width: size.width,
+      height: size.height
+    }
+  };
+  this.setImages = (images) => {
+    _images = images;
+  };
+}
 
 export default new View();
