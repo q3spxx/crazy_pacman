@@ -1,19 +1,22 @@
-export default class Entity {
-  constructor () {
-    this.components = [];
-  }
-  addComponent (component) {
-    this.components.push(component);
-  }
-  checkComponent (name) {
-    for (let component of this.components) {
+function Entity () {
+  var _components = [];
+
+  this.addComponent = (component) => {
+    _components.push(component);
+  };
+
+  this.checkComponent = (name) => {
+    for (let component of _components) {
       if (component.name === name) return true;
     }
     return false;
-  }
-  getComponent (name) {
-    for (let component of this.components) {
+  };
+
+  this.getComponent = (name) => {
+    for (let component of _components) {
       if (component.name === name) return component;
     }
   }
-}
+};
+
+export default Entity;
