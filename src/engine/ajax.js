@@ -1,22 +1,25 @@
-class Ajax {
-  constructor () {
-    this.xhr = new XMLHttpRequest();
-  }
-  send (request) {
+function Ajax () {
+  //private properties
+  var xhr = new XMLHttpRequest();
+
+  //pubclic methods
+  this.send = (request) => {
     return new Promise((resolve, reject) => {
-      this.xhr.open("GET", request, true);
-      this.xhr.send();
-      this.xhr.onreadystatechange = () => {
+      xhr.open("GET", request, true);
+      xhr.send();
+      xhr.onreadystatechange = () => {
 
-        if (this.xhr.readyState != 4) return;
+        if (xhr.readyState != 4) return;
 
-        if (this.xhr.status != 200) {
-          reject(this.xhr.statusText);
+        if (xhr.status != 200) {
+          reject(xhr.statusText);
         } else {
-          resolve(JSON.parse(this.xhr.responseText));
+          resolve(JSON.parse(xhr.responseText));
         };
       };
     });
   }
-}
+
+};
+
 export default new Ajax();

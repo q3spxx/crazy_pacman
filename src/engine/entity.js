@@ -1,6 +1,8 @@
 function Entity () {
+  //private properties
   var _components = [];
 
+    //pubclic methods
   this.addComponent = (component) => {
     _components.push(component);
   };

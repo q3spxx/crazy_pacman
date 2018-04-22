@@ -1,86 +1,67 @@
 import data from './data.js';
 import view from './view.js';
-console.log(view);
-import Scenes from './scenes.js';
-import Systems from './systems.js';
+import scenes from './scenes.js';
+import systems from './systems.js';
 
-class Game {
-  constructor () {
-    this.element = document.getElementById("canvas");
-    this.isWorking = false;
-    this.fpsCounter = 0;
-    this.lastFpsCounterUpdate = new Date().getTime();
-    this.fps = 30;
-    this.lastFrame = new Date().getTime();
-    this.scenes = new Scenes();
-    this.systems = new Systems();
-    this.mobile = false;
-    this.size = {
-      width: 672,
-      height: 672
-    }
-  }
-  init () {
-    view.setElem(this.element.getContext('2d'));
-    this.resize();
-    window.addEventListener("resize", () => {this.resize()});
-    data.init();
-    this.scenes.changeScene('gameplay');
-  }
-  start () {
-    this.isWorking = true;
-    window.requestAnimationFrame(this.gameloop.bind(this));
-  }
-  stop () {
-    this.isWorking = false;
-  }
-  gameloop () {
+function Game () {
+  //private properties
+  var _isWorking = false;
+  var _fpsCounter = 0;
+  var _lastFpsCounterUpdate = new Date().getTime();
+  var _fpsLimit = 30;
+  var _lastFrame = new Date().getTime();
+  var _scale = 1;
+  //private methods
+  var _gameloop = () => {
     //toogle
-    if (!this.isWorking) return;
+    if (!_isWorking) return;
     //fps limiter
     let time = new Date().getTime();
-    if (time - this.lastFrame < 1000 / this.fps) {
+    if (time - _lastFrame < 1000 / _fpsLimit) {
       setTimeout(function () {
-          window.requestAnimationFrame(this.gameloop.bind(this));
+        window.requestAnimationFrame(_gameloop.bind(this));
       }.bind(this), 0);
       return;
     };
     //loading
-    if (!data.resourses.loaded) {
-      window.requestAnimationFrame(this.gameloop.bind(this));
+    if (!data.getResourses().getLoaded()) {
+      window.requestAnimationFrame(_gameloop.bind(this));
       return;
-    }
+    };
     //gameloop body
-    this.systems.handleStack();
+    systems.handleStack();
     view.render();
 
     //fps counter
-    this.fpsCounter++;
-    if (time - this.lastFpsCounterUpdate > 1000) {
-      document.getElementById("fps").innerText = "Fps: " + this.fpsCounter;
-      this.fpsCounter = 0;
-      this.lastFpsCounterUpdate = time;
+    _fpsCounter++;
+    if (time - _lastFpsCounterUpdate > 1000) {
+      document.getElementById("fps").innerText = "Fps: " + _fpsCounter;
+      _fpsCounter = 0;
+      _lastFpsCounterUpdate = time;
     };
     //next frame
-    this.lastFrame = time;
-    window.requestAnimationFrame(this.gameloop.bind(this));
-  }
-  resize () {
-    if (window.innerWidth < 672) {
-      this.size.width = 336;
-      this.size.height = 336;
-      this.mobile = true;
-    } else {
-      this.size.width = 672;
-      this.size.height = 672;
-      this.mobile = false;
-    };
-    view.setViewport(this.size);
-    this.canvasResize();
-  }
-  canvasResize () {
-    this.element.width = this.size.width;
-    this.element.height = this.size.height;
-  }
+    _lastFrame = time;
+    window.requestAnimationFrame(_gameloop.bind(this));
+  };
+
+  var _resize = () => {
+    window.innerWidth < 672 ? _scale = .5 : _scale = 1;
+    view.setScale(_scale);
+  };
+  //pubclic methods
+  this.init = () => {
+    _resize();
+    window.addEventListener("resize", function () {_resize()}.bind(this));
+    data.init();
+    scenes.changeScene('gameplay');
+  };
+  this.start = () => {
+    if (_isWorking) return false;
+    _isWorking = true;
+    window.requestAnimationFrame(_gameloop.bind(this));
+  };
+  this.stop = () => {
+    _isWorking = false;
+  };
 }
 export default new Game();

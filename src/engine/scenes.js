@@ -1,15 +1,18 @@
 import Gameplay from '../scenes/gameplay.js';
 
-export default class Scenes {
-  constructor () {
-    this.scene = null;
-  }
-  changeScene (name) {
+function Scenes () {
+  //private properties
+  var _scene = null;
+
+  //pubclic methods
+  this.changeScene = (name) => {
     switch (name) {
       case 'gameplay':
-        this.scene = new Gameplay();
+        _scene = new Gameplay();
       break;
     };
-    this.scene.init();
+    _scene.init();
   }
-}
+};
+
+export default new Scenes();

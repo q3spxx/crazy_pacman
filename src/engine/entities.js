@@ -1,8 +1,10 @@
 import Entity from './entity.js';
 
 function Entities () {
+  //private properties
   var _entities = [];
 
+  //pubclic methods
   this.createEntity = () => {
     let entity = new Entity();
     _entities.push(entity);
