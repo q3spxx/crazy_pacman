@@ -1,7 +1,7 @@
 import System from './system.js';
 import view from '../engine/view.js';
 
-export default class RenderProvider extends System {
+export default class SpriteRenderProvider extends System {
   constructor () {
     super(["position", "sprite"]);
   }
@@ -11,7 +11,9 @@ export default class RenderProvider extends System {
       let sprite = entity.getComponent('sprite');
 
       let task = {
+        type: "image",
         imageId: sprite.imageId,
+        layer: sprite.layer,
         loc: {
           x: position.x,
           y: position.y,

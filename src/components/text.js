@@ -1,11 +1,12 @@
 import Component from './component.js';
 
 export default class Text extends Component {
-  constructor (text, font, fontSize, layer) {
+  constructor (text, fontSize, style, color, layer) {
     super("text");
     this.text = text;
-    this.font = font;
-    this.fintSize = fontSize;
+    this.style = style;
+    this.color = color;
+    this.fontSize = fontSize;
     this.layer = layer;
   }
 };

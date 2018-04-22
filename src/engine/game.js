@@ -31,7 +31,7 @@ function Game () {
     //gameloop body
     systems.handleStack();
     view.render();
-
+    // return
     //fps counter
     _fpsCounter++;
     if (time - _lastFpsCounterUpdate > 1000) {

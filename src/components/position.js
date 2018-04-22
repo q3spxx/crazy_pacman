@@ -1,12 +1,11 @@
 import Component from './component.js';
 
 export default class Position extends Component {
-  constructor (pos) {
+  constructor (x, y, width, height) {
     super("position");
-    this.x = pos.x;
-    this.y = pos.y;
-    this.width = pos.width,
-    this.height = pos.height,
-    this.scale = pos.scale
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
   }
 };

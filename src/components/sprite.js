@@ -1,12 +1,12 @@
 import Component from './component.js';
 
 export default class Sprite extends Component {
-  constructor (size, imageId, rowId, layer) {
+  constructor (x, y, width, height, imageId, rowId, layer) {
     super("sprite");
-    this.x = size.x,
-    this.y = size.y,
-    this.width = size.width;
-    this.height = size.height;
+    this.x = x,
+    this.y = y,
+    this.width = width;
+    this.height = height;
     this.imageId = imageId;
     this.rowId = rowId;
     this.layer = layer;
