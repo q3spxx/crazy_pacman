@@ -2,6 +2,7 @@ import data from './data.js';
 import view from './view.js';
 import scenes from './scenes.js';
 import systems from './systems.js';
+import input from './input.js';
 
 function Game () {
   //private properties
@@ -50,9 +51,10 @@ function Game () {
   };
   //pubclic methods
   this.init = () => {
+    data.init();
     _resize();
     window.addEventListener("resize", function () {_resize()}.bind(this));
-    data.init();
+    input.init();
     scenes.changeScene('gameplay');
   };
   this.start = () => {
