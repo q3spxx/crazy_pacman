@@ -1,7 +1,10 @@
 export default {
   //controls
-  UP: "UP",
-  DOWN: "DOWN",
-  LEFT: "LEFT",
-  RIGHT: "RIGHT"
+  controls: {
+    UP: 1,
+    DOWN: 2,
+    LEFT: 3,
+    RIGHT: 4,
+    DEBUGER: 5
+  }
 };

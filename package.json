@@ -27,5 +27,8 @@
     "babel-preset-env": "^1.6.1",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.14"
+  },
+  "dependencies": {
+    "box2dweb": "^2.1.0-b"
   }
 }

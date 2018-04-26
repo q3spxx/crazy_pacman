@@ -1,11 +1,9 @@
 import Component from './component.js';
 
 export default class Animation extends Component {
-  constructor (frameCount, fps) {
+  constructor (animation) {
     super("animation");
-    this.frameCount = frameCount;
-    this.currentFrame = 0;
-    this.fps = fps;
+    this.fps = animation.fps;
     this.lastFrameTime = new Date().getTime();
   }
 };

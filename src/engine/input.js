@@ -1,5 +1,5 @@
 import events from './events.js';
-import eventsList from './events-list.js';
+import el from './events-list.js';
 
 function Touch (x = 0, y = 0, width = 0, height = 0) {
   this.x = typeof x === "number" ? x : 0;
@@ -12,11 +12,12 @@ function KeyBinding () {
   //private properties
   var _controls = [];
 
-  for (let event in eventsList) {
+  for (let event in el.controls) {
     _controls.push({
       keyCode: 0,
       touch: new Touch(),
-      event: event
+      event: el.controls[event],
+      active: false
     });
   };
   //private methods
@@ -72,24 +73,35 @@ function KeyBinding () {
         control = _findControlByTouch(keyCode)
       break;
     };
-    if (control) return control.event;
+    if (control && !control.active) {
+      control.active = true;
+      return control.event;
+    };
     return false;
+  };
+
+  this.cancel = (keyCode) => {
+    var control = _findControlByKeyCode(keyCode);
+    if (control) control.active = false;
   };
 };
 
 const kb = new KeyBinding();
 
-kb.bind(37, eventsList.LEFT);
-kb.bind(38, eventsList.UP);
-kb.bind(39, eventsList.RIGHT);
-kb.bind(40, eventsList.DOWN);
-kb.bind(new Touch(0, 0, 100, 100), eventsList.DOWN);
+kb.bind(37, el.controls.LEFT);
+kb.bind(38, el.controls.UP);
+kb.bind(39, el.controls.RIGHT);
+kb.bind(40, el.controls.DOWN);
+kb.bind(192, el.controls.DEBUGER);
+kb.bind(new Touch(0, 0, 100, 100), el.controls.DOWN);
 
 function init () {
-  document.addEventListener("keyup", function (e) {
+  document.addEventListener("keydown", function (e) {
     let event = kb.getEvent(e.keyCode)
-    console.log(event);
     if (event) events.emit(event);
+  });
+  document.addEventListener("keyup", function (e) {
+    kb.cancel(e.keyCode);
   });
   document.getElementById("canvas").addEventListener("click", function (e) {
     let event = kb.getEvent({x: e.x, y: e.y})

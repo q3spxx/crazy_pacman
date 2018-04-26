@@ -1,15 +1,16 @@
 import data from './data.js';
+import input from './input.js';
 import view from './view.js';
 import scenes from './scenes.js';
 import systems from './systems.js';
-import input from './input.js';
+import physics from './physics.js';
 
 function Game () {
   //private properties
   var _isWorking = false;
   var _fpsCounter = 0;
   var _lastFpsCounterUpdate = new Date().getTime();
-  var _fpsLimit = 30;
+  var _fpsLimit = 60;
   var _lastFrame = new Date().getTime();
   var _scale = 1;
   //private methods
@@ -31,6 +32,7 @@ function Game () {
     };
     //gameloop body
     systems.handleStack();
+    physics.update();
     view.render();
     // return
     //fps counter
@@ -55,6 +57,7 @@ function Game () {
     _resize();
     window.addEventListener("resize", function () {_resize()}.bind(this));
     input.init();
+    physics.init(_fpsLimit);
     scenes.changeScene('gameplay');
   };
   this.start = () => {
@@ -64,6 +67,9 @@ function Game () {
   };
   this.stop = () => {
     _isWorking = false;
+  };
+  this.getScale = () => {
+    return _scale;
   };
 }
 export default new Game();

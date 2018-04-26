@@ -1,15 +1,19 @@
+import events from './events.js';
+import el from './events-list.js';
+
 function View () {
   //privat properties
-  var _images = [];
-  var _tasks = []
-  var _elem = document.getElementById("canvas");
-  var _ctx = _elem.getContext('2d');
-  var _clearColor = "#000";
-  var _scale = 1;
-  var _viewport = {
-    width: 0,
-    height: 0
-  };
+  var _images = [],
+      _tasks = [],
+      _elem = document.getElementById("canvas"),
+      _ctx = _elem.getContext('2d'),
+      _clearColor = "#000",
+      _scale = 1,
+      _viewport = {
+        width: 0,
+        height: 0
+      },
+      _debuger = false;
   //privat methods
   var _clear = () => {
     _ctx.fillStyle = _clearColor;
@@ -34,8 +38,8 @@ function View () {
       task.src.y,
       task.src.width,
       task.src.height,
-      task.loc.x,
-      task.loc.y,
+      task.loc.x * _scale,
+      task.loc.y * _scale,
       task.loc.width * _scale,
       task.loc.height * _scale,
     );
@@ -45,8 +49,14 @@ function View () {
     _ctx.fillStyle = task.color;
     _ctx.font = task.font;
     _ctx.textBaseline = "top";
-    _ctx.fillText(task.text, task.loc.x, task.loc.y);
+    _ctx.fillText(task.text, task.loc.x * _scale, task.loc.y * _scale);
   };
+
+  var _changeDebuger = () => {
+    _debuger ? _debuger = false : _debuger = true;
+  };
+
+  events.subscribe(el.controls.DEBUGER, _changeDebuger);
 
   //public methods
   this.setScale = (scale) => {
@@ -59,6 +69,10 @@ function View () {
   };
 
   this.render = () => {
+    if (_debuger) {
+      _tasks = [];
+      return;
+    };
     _clear();
     let forRender = _tasks.sort((a, b) => {
       return a.layer > b.layer ? 1 : -1;
