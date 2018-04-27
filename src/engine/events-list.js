@@ -5,6 +5,7 @@ export default {
     DOWN: 2,
     LEFT: 3,
     RIGHT: 4,
-    DEBUGER: 5
+    DEBUGER: 5,
+    PAUSE: 6
   }
 };

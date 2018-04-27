@@ -19,6 +19,11 @@ function Entities () {
       return true;
     });
   };
+  this.removeEntity = (entity) => {
+    let index = _entities.indexOf(entity);
+    if (index === -1) return;
+    _entities.splice(index, 1);
+  };
 };
 
 export default Entities;

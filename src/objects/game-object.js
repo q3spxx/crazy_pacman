@@ -6,4 +6,7 @@ export default class GameObject {
     this.entity = data.getEntities().createEntity();
     this.entity.addComponent(new Transform(position));
   }
+  remove () {
+    data.getEntities().removeEntity(this.entity)
+  }
 }

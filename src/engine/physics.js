@@ -9,15 +9,27 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
  ,	b2MassData = Box2D.Collision.Shapes.b2MassData
  ,	b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape
  ,	b2CircleShape = Box2D.Collision.Shapes.b2CircleShape
- ,	b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
+ ,	b2DebugDraw = Box2D.Dynamics.b2DebugDraw
+ ,  b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
 function Physics () {
   var _world;
   var _fps = 0;
   var _debugDraw = new b2DebugDraw();
+  var _contactListener = new b2ContactListener();
+  var _bodiesForDestroy = [];
+
+  var _destroyBodies = () => {
+    while (_bodiesForDestroy.length > 0) {
+      let bodies = _bodiesForDestroy.splice(0, 1);
+      _world.DestroyBody(bodies[0]);
+    };
+  };
+
   this.init = (fps) => {
     _fps = fps;
     _world = new b2World(new b2Vec2(0, 0), true);
+
     _debugDraw.SetSprite(document.getElementById("canvas").getContext("2d"));
     _debugDraw.SetDrawScale(30.0);
     _debugDraw.SetFillAlpha(0.3);
@@ -25,26 +37,15 @@ function Physics () {
     _debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
     _world.SetDebugDraw(_debugDraw);
 
-    // var fixDef = new b2FixtureDef();
-    // fixDef.density = 1.0;
-    // fixDef.friction = 0.5;
-    // fixDef.restitution = 0.2;
-    //
-    // var bodyDef = new b2BodyDef();
-    // bodyDef.type = b2Body.b2_staticBody;
-    // bodyDef.position.x = 0;
-    // bodyDef.position.y = 10;
-    // fixDef.shape = new b2PolygonShape();
-    // fixDef.shape.SetAsBox((position.width / 2) / 30, (position.height / 2) / 30);
-    // let body = _world.CreateBody(bodyDef);
-    // body.CreateFixture(fixDef);
+    _world.SetContactListener(_contactListener);
   };
   this.update = () => {
     _world.Step(1 / _fps, 10, 10);
     _world.DrawDebugData();
     _world.ClearForces();
+    _destroyBodies();
   };
-  this.createBody = (position, type, shape) => {
+  this.createBody = (position, type, shape, object) => {
     var fixDef = new b2FixtureDef();
     fixDef.density = 1.0;
     fixDef.friction = 0.5;
@@ -74,8 +75,37 @@ function Physics () {
       break;
     };
     let body = _world.CreateBody(bodyDef);
+    body.SetFixedRotation(true);
     body.CreateFixture(fixDef);
+    body.SetUserData(object);
     return body;
+  };
+  this.setBeginContactCallback = (callback) => {
+    if (typeof callback !== "function") return;
+    _contactListener.BeginContact = (contact) => {
+      callback(contact);
+    };
+  };
+  this.setEndContactCallback = (callback) => {
+    if (typeof callback !== "function") return;
+    _contactListener.EndContact = (contact) => {
+      callback(contact);
+    };
+  };
+  this.setPreSolveCallback = (callback) => {
+    if (typeof callback !== "function") return;
+    _contactListener.PreSolve = (contact) => {
+      callback(contact);
+    };
+  };
+  this.setPostSolveCallback = (callback) => {
+    if (typeof callback !== "function") return;
+    _contactListener.PsotSolve = (contact) => {
+      callback(contact);
+    };
+  };
+  this.destroyBody = (body) => {
+    _bodiesForDestroy.push(body);
   };
 };
 

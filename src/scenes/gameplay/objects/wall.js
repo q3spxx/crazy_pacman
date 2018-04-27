@@ -1,5 +1,6 @@
 import MapObject from './map-object.js';
-import Collider from '../components/collider.js';
+import Collider from '../../../components/collider.js';
+import ol from './objects-list.js';
 
 var sprite = {
   currentSpriteSheet: "DEFAULT",
@@ -11,6 +12,7 @@ var sprite = {
 export default class Wall extends MapObject {
   constructor (position) {
     super(position, sprite);
-    this.entity.addComponent(new Collider(position, "static", "polygon"));
+    this.name = ol.WALL;
+    this.entity.addComponent(new Collider(position, "static", "polygon", this));
   }
 }

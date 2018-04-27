@@ -1,9 +1,11 @@
 import data from './data.js';
 import input from './input.js';
+import events from './events.js';
 import view from './view.js';
 import scenes from './scenes.js';
 import systems from './systems.js';
 import physics from './physics.js';
+import el from './events-list.js';
 
 function Game () {
   //private properties
@@ -57,6 +59,7 @@ function Game () {
     _resize();
     window.addEventListener("resize", function () {_resize()}.bind(this));
     input.init();
+    events.subscribe(el.controls.PAUSE, this.pause.bind(this));
     physics.init(_fpsLimit);
     scenes.changeScene('gameplay');
   };
@@ -65,8 +68,13 @@ function Game () {
     _isWorking = true;
     window.requestAnimationFrame(_gameloop.bind(this));
   };
-  this.stop = () => {
-    _isWorking = false;
+  this.pause = () => {
+    if (_isWorking) {
+      _isWorking = false;
+    } else {
+      _isWorking = true;
+      window.requestAnimationFrame(_gameloop.bind(this));
+    };
   };
   this.getScale = () => {
     return _scale;

@@ -1,5 +1,3 @@
-import eventsList from './events-list.js';
-
 function Events () {
   var _subscribers = [];
 

@@ -93,10 +93,12 @@ kb.bind(38, el.controls.UP);
 kb.bind(39, el.controls.RIGHT);
 kb.bind(40, el.controls.DOWN);
 kb.bind(192, el.controls.DEBUGER);
+kb.bind(49, el.controls.PAUSE);
 kb.bind(new Touch(0, 0, 100, 100), el.controls.DOWN);
 
 function init () {
   document.addEventListener("keydown", function (e) {
+    // console.log(e.keyCode);
     let event = kb.getEvent(e.keyCode)
     if (event) events.emit(event);
   });

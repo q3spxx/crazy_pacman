@@ -1,5 +1,5 @@
-import GameObject from './game-object.js';
-import Sprite from '../components/sprite.js';
+import GameObject from '../../../objects/game-object.js';
+import Sprite from '../../../components/sprite.js';
 
 export default class MapObject extends GameObject {
   constructor (position, sprite) {
